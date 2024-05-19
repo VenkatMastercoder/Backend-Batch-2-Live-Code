@@ -1,0 +1,16 @@
+{
+  "name": "cal-basics",
+  "version": "1.0.0",
+  "description": "",
+  "main": "cal.js",
+  "scripts": {
+    "start": "nodemon cal.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cal-basics": "^1.0.0",
+    "nodemon": "^3.1.0"
+  }
+}
