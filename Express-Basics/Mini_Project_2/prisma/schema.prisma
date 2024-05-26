@@ -9,7 +9,12 @@ datasource db {
   // directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
-model User2 {
+model Product {
   id String @unique
-  name String
+  image_url String
+  title String
+  rating String
+  timing String
+  location String
 }
+

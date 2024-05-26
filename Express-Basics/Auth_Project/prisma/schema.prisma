@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// prisma/schema.prisma
+datasource db {
+  provider  = "postgresql"
+  url  	    = env("DATABASE_URL")
+  // uncomment next line if you use Prisma <5.10
+  // directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+model User {
+  id String @id @unique @default(cuid())
+  name String
+  email String @unique
+  phonenumber String
+  dob String
+  password String
+}
+
+model RefreshToken {
+  id String @id @unique @default(cuid())
+  userId String
+  token String @unique
+}

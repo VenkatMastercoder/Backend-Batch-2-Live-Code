@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url  	    = env("DATABASE_URL")
+  // uncomment next line if you use Prisma <5.10
+  // directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+model Restaurant {
+  id Int @default(autoincrement())
+  restaurant_id String @id @unique @default(cuid())
+  image_url String
+  title String
+  rating String
+  timing String
+  location String
+  createdAt              DateTime            @default(now())
+  updatedAt              DateTime            @updatedAt
+  restaurant_details  RestaurantDetails?
+}
+
+model RestaurantDetails {
+  id Int @default(autoincrement())
+  restaurant_details_id String @id @unique @default(cuid())
+  title String 
+  rating String
+  price String
+  location String
+  timing String
+  restaurant_text String
+
+  restaurant_id  String @unique
+  restaurant Restaurant @relation(fields:[restaurant_id],references:[restaurant_id],onDelete: Cascade, onUpdate: Cascade)
+
+  food_list FoodLists[]
+  similar_restaurants SimilarRestaurant[] 
+} 
+
+model FoodLists {
+  id Int @default(autoincrement())
+  food_list_id String @id @unique @default(cuid())
+  food_name String
+  rating String?
+  product_image String
+  description String  
+
+  restaurant_details_id String 
+  restaurant_details RestaurantDetails @relation(fields:[restaurant_details_id],references:[restaurant_details_id],onDelete: Cascade, onUpdate: Cascade) 
+}
+
+model SimilarRestaurant {
+  id Int @default(autoincrement())
+  similar_restaurants_id String @id @unique @default(cuid())
+  image_url String
+  title String
+  rating String
+  timing String
+  location String
+
+  restaurant_details_id String
+  restaurant_details RestaurantDetails @relation(fields:[restaurant_details_id],references:[restaurant_details_id],onDelete: Cascade, onUpdate: Cascade) 
+}

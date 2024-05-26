@@ -1,50 +1,115 @@
 const { PrismaClient } = require("@prisma/client");
 const express = require("express");
 
-// It will Create a Http Server [ Instance ]
+// this Create an Instance of Http Server
 const app = express();
 
 const prisma = new PrismaClient();
 
-// http://localhost:3000/app
-app.get("/app", (req, res) => {
-  res.send("Hello");
-});
+app.use(express.json());
 
 // http://localhost:3000/
 app.get("/", async (req, res) => {
   // Data from Frontend [ Optional ]
 
-  // Db Logic
-  const productData = await prisma.product.findMany();
+  // DB Logic
+  const userData = await prisma.user2.findMany();
 
-  // Data to frontend
-  res.json({
-    message: "product Data Retrieved Sucessfully",
-    data: productData,
-  });
+  // Send data to Frontend
+  res.json({ data: userData });
 });
 
+// http://localhost:3000/
 app.get("/:id", async (req, res) => {
   // Data from Frontend [ Optional ]
-  const productId = req.params;
+  const userId = req.params;
 
-  console.log(productId)
+  console.log("params", userId);
+
+  // DB Logic
+  const userData = await prisma.user2.findUnique({
+    where: {
+      id: userId.id,
+    },
+  });
+
+  // Send data to Frontend
+  res.json({ data: userData });
+});
+
+// http://localhost:3000/
+app.post("/", async (req, res) => {
+  // Data from Frontend
+  const userData = req.body;
+  console.log(userData);
+
+  // DB Logic
+  const newUser = await prisma.user2.create({
+    data: {
+      id: userData.id,
+      name: userData.name,
+    },
+  });
+
+  // Data Frontend
+  res.json({ message: "User as been Sucessfully " });
+});
+
+app.put("/", async (req, res) => {
+  // data from Frontend
+  const newData = req.body;
+  console.log(newData);
 
   // Db Logic
-  const productData = await prisma.product.findUnique({
-    where : {
-      id : productId.id
-    }
+  const newUserData = await prisma.user2.update({
+    where: {
+      id: newData.id,
+    },
+    data: {
+      id: newData.id,
+      name: newData.name,
+    },
   });
 
-  // Data to frontend
-  res.json({
-    message: "product Data Retrieved Sucessfully",
-    data: productData,
+  // data to Frontend
+  res.json({ newData: newUserData });
+});
+
+app.delete("/", async (req, res) => {
+  // data from Frontend
+  const userId = req.body;
+
+  // DB Logic
+  await prisma.user2.delete({
+    where: {
+      id: userId.id,
+    },
   });
 
+  // data to Frontend
+  res.json({ message: " user delete Sucessfully" });
+});
 
+// http://localhost:3000/user
+app.get("/user", (req, res) => {
+  const data = req.headers;
+  console.log("user route - 1", data);
+
+  // Db logic
+
+  // Send Data to Frontend
+  res.send("Data from headers");
+});
+
+// http://localhost:3000/user
+app.post("/user", (req, res) => {
+  const data = req.headers;
+  console.log("user route - 2", data);
+
+  // Db logic
+
+  // Send Data to Frontend
+  res.send("Data from headers");
 });
 
 app.listen(3000);
