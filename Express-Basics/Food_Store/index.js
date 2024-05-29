@@ -112,4 +112,6 @@ const globalErrorHandingMiddleware = (err, req, res, next) => {
 
 app.use(globalErrorHandingMiddleware);
 
-app.listen(3007);
+app.listen(3007, () => {
+  console.log("Server Running");
+});
