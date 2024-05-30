@@ -10,7 +10,7 @@ const api = require("./router/index");
 app.use(express.json());
 
 const restaurantIdSchema = z.object({
-  id: z.number(),
+  id: z.string(),
 });
 
 // API BASE URL OR BASE ROUTE
